@@ -21,6 +21,8 @@ jobs:
             [ -f activity_main.xml ] && mv activity_main.xml app/src/main/res/layout/
             [ -f strings.xml ] && mv strings.xml app/src/main/res/values/
             [ -f index.html ] && mv index.html app/src/main/assets/
+            mkdir -p app/src/main/res/mipmap-xxxhdpi && [ -f ic_launcher.png ] && mv ic_launcher.png app/src/main/res/mipmap-xxxhdpi/
+          
             [ -f proguard-rules.pro ] && mv proguard-rules.pro app/
 
             cat << 'GRADLE_ROOT' > build.gradle
