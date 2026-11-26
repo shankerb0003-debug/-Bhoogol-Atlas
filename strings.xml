@@ -8,11 +8,11 @@
     <!-- =================================================================== -->
 
     <!-- 1. AdMob App ID (असली App ID यहाँ डालें) -->
-    <string name="admob_app_id">ca-app-pub-3940256099942544~3347511713</string>
+    <string name="admob_app_id">ca-app-pub-5793307297750318~1675639081</string>
 
     <!-- 2. AdMob Banner Ad Unit ID (निचले बैनर विज्ञापन की ID यहाँ डालें) -->
-    <string name="admob_banner_id">ca-app-pub-3940256099942544/6300978111</string>
+    <string name="admob_banner_id">ca-app-pub-5793307297750318/4261566139</string>
 
     <!-- 3. AdMob Interstitial Ad Unit ID (क्विज़ के बाद दिखने वाले विज्ञापन की ID) -->
-    <string name="admob_interstitial_id">ca-app-pub-3940256099942544/1033173712</string>
+    <string name="admob_interstitial_id">ca-app-pub-5793307297750318/6910413221</string>
 </resources>
