@@ -1,0 +1,86 @@
+name: Build Bhoogol Atlas Android
+
+on:
+  push:
+    branches: [ main, master ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Organize Android Folders Automatically
+        run: |
+          if [ ! -f app/build.gradle ]; then
+            mkdir -p app/src/main/java/com/bhawanishankar/bhoogolatlas
+            mkdir -p app/src/main/res/layout app/src/main/res/values app/src/main/assets
+            [ -f AndroidManifest.xml ] && mv AndroidManifest.xml app/src/main/
+            [ -f MainActivity.java ] && mv MainActivity.java app/src/main/java/com/bhawanishankar/bhoogolatlas/
+            [ -f activity_main.xml ] && mv activity_main.xml app/src/main/res/layout/
+            [ -f strings.xml ] && mv strings.xml app/src/main/res/values/
+            [ -f index.html ] && mv index.html app/src/main/assets/
+            [ -f proguard-rules.pro ] && mv proguard-rules.pro app/
+
+            cat << 'GRADLE_ROOT' > build.gradle
+          plugins {
+              id 'com.android.application' version '8.5.2' apply false
+          }
+          GRADLE_ROOT
+
+            cat << 'GRADLE_APP' > app/build.gradle
+          plugins {
+              id 'com.android.application'
+          }
+          android {
+              namespace 'com.bhawanishankar.bhoogolatlas'
+              compileSdk 35
+              defaultConfig {
+                  applicationId "com.bhawanishankar.bhoogolatlas"
+                  minSdk 24
+                  targetSdk 35
+                  versionCode 1
+                  versionName "1.0.0"
+              }
+              buildTypes {
+                  release {
+                      minifyEnabled false
+                      proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+                  }
+              }
+              compileOptions {
+                  sourceCompatibility JavaVersion.VERSION_17
+                  targetCompatibility JavaVersion.VERSION_17
+              }
+          }
+          dependencies {
+              implementation 'androidx.appcompat:appcompat:1.7.0'
+              implementation 'com.google.android.material:material:1.12.0'
+              implementation 'com.google.android.gms:play-services-ads:23.6.0'
+          }
+          GRADLE_APP
+          fi
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.7'
+
+      - name: Build Release AAB and Debug APK
+        run: gradle bundleRelease assembleDebug --no-daemon
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: BhoogolAtlas-PlayStore-AAB
+          path: app/build/outputs/bundle/release/*.aab
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: BhoogolAtlas-Test-APK
+          path: app/build/outputs/apk/debug/*.apk
+          
