@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">भूगोल एटलस</string>
+
+    <!-- =================================================================== -->
+    <!-- GOOGLE ADMOB IDs: Play Store पर अपलोड करने से पहले नीचे टेस्ट IDs   -->
+    <!-- हटाकर अपने Google AdMob खाते की असली IDs यहाँ पेस्ट करें:          -->
+    <!-- =================================================================== -->
+
+    <!-- 1. AdMob App ID (असली App ID यहाँ डालें) -->
+    <string name="admob_app_id">ca-app-pub-3940256099942544~3347511713</string>
+
+    <!-- 2. AdMob Banner Ad Unit ID (निचले बैनर विज्ञापन की ID यहाँ डालें) -->
+    <string name="admob_banner_id">ca-app-pub-3940256099942544/6300978111</string>
+
+    <!-- 3. AdMob Interstitial Ad Unit ID (क्विज़ के बाद दिखने वाले विज्ञापन की ID) -->
+    <string name="admob_interstitial_id">ca-app-pub-3940256099942544/1033173712</string>
+</resources>
