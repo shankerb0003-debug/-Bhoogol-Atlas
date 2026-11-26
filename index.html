@@ -95,12 +95,11 @@
 
       <nav id="mainTabs" class="flex items-center gap-1 sm:gap-1.5 bg-slate-800/90 p-1 rounded-xl overflow-x-auto max-w-full">
         <button data-tab="world" class="tab-btn px-3 py-1.5 rounded-lg text-xs sm:text-sm font-medium whitespace-nowrap transition bg-teal-600 text-white shadow-sm">🌍 विश्व भूगोल</button>
-        <button data-tab="india" class="tab-btn px-3 py-1.5 rounded-lg text-xs sm:text-sm font-medium whitespace-nowrap transition text-slate-300 hover:text-white hover:bg-slate-700">🇮🇳 भारत भूगोल <span id="indiaLockIcon">🔒</span></button>
-        <button data-tab="rajasthan" class="tab-btn px-3 py-1.5 rounded-lg text-xs sm:text-sm font-medium whitespace-nowrap transition text-slate-300 hover:text-white hover:bg-slate-700">🏜️ राजस्थान भूगोल <span id="rjLockIcon">🔒</span></button>
+        <button data-tab="india" class="tab-btn px-3 py-1.5 rounded-lg text-xs sm:text-sm font-medium whitespace-nowrap transition text-slate-300 hover:text-white hover:bg-slate-700">🇮🇳 भारत भूगोल</button>
+        <button data-tab="rajasthan" class="tab-btn px-3 py-1.5 rounded-lg text-xs sm:text-sm font-medium whitespace-nowrap transition text-slate-300 hover:text-white hover:bg-slate-700">🏜️ राजस्थान भूगोल</button>
         <button data-tab="quiz" class="tab-btn px-3 py-1.5 rounded-lg text-xs sm:text-sm font-medium whitespace-nowrap transition text-slate-300 hover:text-white hover:bg-slate-700">🎯 अभ्यास क्विज़</button>
       </nav>
       <div class="flex items-center gap-2">
-        <button id="openPayBtn" class="px-3 py-1.5 rounded-xl text-xs font-semibold bg-amber-500 hover:bg-amber-400 text-slate-950 transition flex items-center gap-1 shadow-sm">👑 प्रीमियम अनलॉक</button>
         <button id="openLoginBtn" class="px-3 py-1.5 rounded-xl text-xs font-semibold bg-emerald-600 hover:bg-emerald-500 text-white transition flex items-center gap-1.5 shadow-sm">📱 लॉगिन</button>
         <button id="openLegalBtn" class="px-3 py-1.5 rounded-xl text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 transition">ℹ️ नीतियाँ व संपर्क</button>
       </div>
@@ -120,24 +119,6 @@
       </div>
     </section>
 
-
-    <!-- Premium Paywall Gate for India & Rajasthan Geography -->
-    <section id="premiumPaywall" class="hidden bg-white border border-amber-200 rounded-2xl shadow-sm p-6 sm:p-10 text-center max-w-2xl mx-auto my-4 space-y-5">
-      <div class="w-16 h-16 mx-auto rounded-2xl bg-amber-100 border border-amber-300 flex items-center justify-center text-3xl">🔒</div>
-      <div class="space-y-2">
-        <span class="inline-block px-3 py-0.5 rounded-full bg-amber-100 text-amber-800 text-xs font-bold">प्रीमियम अनुभाग (Paid Access)</span>
-        <h2 id="paywallTitle" class="text-xl sm:text-2xl font-bold text-slate-900">भारत और राजस्थान का भूगोल अनलॉक करें</h2>
-        <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">विश्व भूगोल और अभ्यास क्विज़ निःशुल्क हैं। भारत व राजस्थान के संपूर्ण परीक्षा-स्तरीय मानचित्र, दर्रे, नदियाँ, झीलें, अरावली चोटियाँ और मानसून डेटा खोलने के लिए भुगतान पूरा करें।</p>
-      </div>
-      <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-left bg-slate-50 border border-slate-200 rounded-2xl p-4 text-xs">
-        <div>✅ <strong>भारत भूगोल:</strong> 6 भौतिक प्रदेश, 18 दर्रे, 20 नदियाँ, 10 चोटियाँ, झीलें व मानसून</div>
-        <div>✅ <strong>राजस्थान भूगोल:</strong> 4 भौतिक प्रदेश, 17 चोटियाँ, 10 नाल/दर्रे, 14 नदियाँ, कोपेन जलवायु</div>
-      </div>
-      <div class="flex flex-wrap items-center justify-center gap-3 pt-1">
-        <button id="unlockNowBtn" class="px-6 py-3 rounded-xl bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white font-bold text-sm shadow-md transition">💳 ₹99 में अभी अनलॉक करें (Payment Gateway)</button>
-        <button id="backToFreeWorldBtn" class="px-5 py-3 rounded-xl border border-slate-300 text-slate-700 font-semibold text-sm hover:bg-slate-100 transition">🌍 निःशुल्क विश्व भूगोल देखें</button>
-      </div>
-    </section>
 
     <!-- Main Grid -->
     <div id="atlasMainGrid" class="grid grid-cols-1 lg:grid-cols-12 gap-4 items-start">
@@ -249,17 +230,6 @@
     </div>
   </div>
 
-
-  <!-- Payment Gateway Modal -->
-  <div id="paymentModal" class="hidden fixed inset-0 z-50 bg-slate-900/70 backdrop-blur-sm flex items-center justify-center p-4">
-    <div class="bg-white rounded-2xl shadow-2xl max-w-md w-full overflow-hidden border border-slate-200">
-      <div class="px-5 py-3.5 bg-slate-900 text-white flex items-center justify-between">
-        <h3 class="text-base font-bold">💳 प्रीमियम अनलॉक — पेमेंट गेटवे</h3>
-        <button id="closePaymentBtn" class="text-slate-300 hover:text-white text-lg font-bold">✕</button>
-      </div>
-      <div id="paymentModalBody" class="p-5 space-y-4"></div>
-    </div>
-  </div>
 
   <!-- Mobile Number Login Modal -->
   <div id="loginModal" class="hidden fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
@@ -1301,17 +1271,7 @@
         if (state.quizQuestions.length === 0) startQuiz();
       } else {
         quizWs.classList.add('hidden'); atlasWs.classList.remove('hidden');
-        const locked = (tab === 'india' || tab === 'rajasthan') && !isPremiumUnlocked;
-        document.getElementById('premiumPaywall').classList.toggle('hidden', !locked);
-        document.getElementById('atlasFilterBar').classList.toggle('hidden', locked);
-        document.getElementById('atlasMainGrid').classList.toggle('hidden', locked);
-        if (locked) {
-          document.getElementById('paywallTitle').textContent = tab === 'india'
-            ? 'भारत का भूगोल देखने के लिए अनलॉक करें'
-            : 'राजस्थान का भूगोल देखने के लिए अनलॉक करें';
-        } else {
-          renderFilterControls(); renderInspector(); renderMap(true);
-        }
+        renderFilterControls(); renderInspector(); renderMap(true);
       }
     }
 
@@ -1715,136 +1675,6 @@
       document.getElementById('admobInterstitialModal').classList.add('hidden');
     });
 
-
-    // =========================================================================
-    // 13. PAYMENT GATEWAY & PREMIUM UNLOCK (INDIA & RAJASTHAN)
-    // =========================================================================
-    const PAYMENT_CONFIG = {
-      amountINR: 99,
-      productId: 'bhoogol_india_rajasthan_unlock',
-      razorpayKeyId: '[आपकी Razorpay Key ID यहाँ डालें]',
-      upiId: '[आपकी UPI ID / Play Billing Product ID]'
-    };
-
-    let isPremiumUnlocked = false;
-    let selectedPayMethod = 'play_billing';
-
-    function loadPremiumState() {
-      try {
-        isPremiumUnlocked = localStorage.getItem('bhoogol_atlas_premium') === 'true';
-      } catch (e) {}
-      updatePremiumUI();
-    }
-
-    function setPremiumUnlocked(val) {
-      isPremiumUnlocked = !!val;
-      try {
-        localStorage.setItem('bhoogol_atlas_premium', isPremiumUnlocked ? 'true' : 'false');
-      } catch (e) {}
-      updatePremiumUI();
-      if (state.activeTab !== 'quiz') switchTab(state.activeTab);
-    }
-
-    function updatePremiumUI() {
-      const btn = document.getElementById('openPayBtn');
-      const inLock = document.getElementById('indiaLockIcon');
-      const rjLock = document.getElementById('rjLockIcon');
-      if (inLock) inLock.textContent = isPremiumUnlocked ? '✅' : '🔒';
-      if (rjLock) rjLock.textContent = isPremiumUnlocked ? '✅' : '🔒';
-      if (btn) {
-        if (isPremiumUnlocked) {
-          btn.innerHTML = '👑 प्रीमियम सक्रिय';
-          btn.className = 'px-3 py-1.5 rounded-xl text-xs font-semibold bg-amber-100 text-amber-900 border border-amber-300 transition flex items-center gap-1';
-        } else {
-          btn.innerHTML = '👑 प्रीमियम अनलॉक';
-          btn.className = 'px-3 py-1.5 rounded-xl text-xs font-semibold bg-amber-500 hover:bg-amber-400 text-slate-950 transition flex items-center gap-1 shadow-sm';
-        }
-      }
-    }
-
-    function openPaymentModal() {
-      document.getElementById('paymentModal').classList.remove('hidden');
-      renderPaymentModal();
-    }
-
-    function renderPaymentModal() {
-      const body = document.getElementById('paymentModalBody');
-      if (isPremiumUnlocked) {
-        body.innerHTML = `
-          <div class="bg-emerald-50 border border-emerald-200 rounded-xl p-4 text-center space-y-2">
-            <div class="text-3xl">🎉</div>
-            <div class="text-base font-bold text-emerald-900">प्रीमियम एक्सेस सक्रिय है!</div>
-            <p class="text-xs text-emerald-700">भारत और राजस्थान के सभी मानचित्र व डेटा आपके लिए अनलॉक हो चुके हैं।</p>
-          </div>
-          <button id="resetPremiumDemoBtn" class="w-full py-2 rounded-xl border border-slate-300 text-slate-600 text-xs font-semibold hover:bg-slate-100">डेमो के लिए पुनः लॉक करें</button>
-        `;
-        return;
-      }
-
-      body.innerHTML = `
-        <div class="bg-amber-50 border border-amber-200 rounded-xl p-3.5 flex items-center justify-between">
-          <div>
-            <div class="text-xs font-bold text-amber-900">भारत + राजस्थान संपूर्ण भूगोल पैक</div>
-            <div class="text-[11px] text-amber-700">आजीवन एक्सेस • एक बार भुगतान</div>
-          </div>
-          <div class="text-xl font-extrabold text-slate-900">₹${PAYMENT_CONFIG.amountINR}</div>
-        </div>
-        <div class="space-y-2">
-          <div class="text-xs font-bold text-slate-700">भुगतान माध्यम चुनें:</div>
-          <label class="flex items-center gap-2.5 p-2.5 rounded-xl border cursor-pointer ${selectedPayMethod === 'play_billing' ? 'border-teal-600 bg-teal-50/50' : 'border-slate-200'}">
-            <input type="radio" name="payMethod" value="play_billing" ${selectedPayMethod === 'play_billing' ? 'checked' : ''} />
-            <span class="text-xs font-semibold text-slate-800">Google Play Billing (Play Store सुरक्षित भुगतान)</span>
-          </label>
-          <label class="flex items-center gap-2.5 p-2.5 rounded-xl border cursor-pointer ${selectedPayMethod === 'upi' ? 'border-teal-600 bg-teal-50/50' : 'border-slate-200'}">
-            <input type="radio" name="payMethod" value="upi" ${selectedPayMethod === 'upi' ? 'checked' : ''} />
-            <span class="text-xs font-semibold text-slate-800">UPI (PhonePe / Google Pay / Paytm)</span>
-          </label>
-          <label class="flex items-center gap-2.5 p-2.5 rounded-xl border cursor-pointer ${selectedPayMethod === 'card' ? 'border-teal-600 bg-teal-50/50' : 'border-slate-200'}">
-            <input type="radio" name="payMethod" value="card" ${selectedPayMethod === 'card' ? 'checked' : ''} />
-            <span class="text-xs font-semibold text-slate-800">डेबिट/क्रेडिट कार्ड / नेटबैंकिंग (Razorpay)</span>
-          </label>
-        </div>
-        <div class="bg-blue-50 border border-blue-200 rounded-xl p-2.5 text-[11px] text-blue-900 leading-relaxed">
-          प्रीव्यू मोड में परीक्षण हेतु नीचे बटन दबाते ही भुगतान सफल होकर भारत व राजस्थान अनुभाग खुल जाएँगे। Play Store पर लाइव भुगतान के लिए अपनी Google Play Billing / Razorpay Key जोड़ें।
-        </div>
-        <button id="completePaymentBtn" class="w-full py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-bold transition shadow-sm">✅ ₹${PAYMENT_CONFIG.amountINR} का भुगतान पूरा करें</button>
-      `;
-    }
-
-    document.getElementById('openPayBtn').addEventListener('click', openPaymentModal);
-    document.getElementById('unlockNowBtn').addEventListener('click', openPaymentModal);
-    document.getElementById('closePaymentBtn').addEventListener('click', () => document.getElementById('paymentModal').classList.add('hidden'));
-    document.getElementById('backToFreeWorldBtn').addEventListener('click', () => switchTab('world'));
-
-    document.getElementById('paymentModalBody').addEventListener('change', e => {
-      if (e.target.name === 'payMethod') {
-        selectedPayMethod = e.target.value;
-        renderPaymentModal();
-      }
-    });
-
-    document.getElementById('paymentModalBody').addEventListener('click', e => {
-      if (e.target.id === 'completePaymentBtn') {
-        if (window.AndroidBilling && typeof window.AndroidBilling.startPurchase === 'function') {
-          try { window.AndroidBilling.startPurchase(PAYMENT_CONFIG.productId); return; } catch (err) {}
-        }
-        setPremiumUnlocked(true);
-        document.getElementById('paymentModal').classList.add('hidden');
-        showToast('🎉 भुगतान सफल! भारत और राजस्थान का भूगोल अनलॉक हो गया है।');
-      } else if (e.target.id === 'resetPremiumDemoBtn') {
-        setPremiumUnlocked(false);
-        document.getElementById('paymentModal').classList.add('hidden');
-        showToast('प्रीमियम स्थिति रीसेट की गई (पुनः लॉक)।');
-      }
-    });
-
-    window.onAndroidPurchaseSuccess = function() {
-      setPremiumUnlocked(true);
-      document.getElementById('paymentModal').classList.add('hidden');
-      showToast('🎉 Google Play भुगतान सफल! सभी अनुभाग अनलॉक हो गए।');
-    };
-
-    loadPremiumState();
 
     if (window.AndroidAdMob) { const b = document.getElementById('admobBannerSlot'); if (b) b.classList.add('hidden'); }
     loadAuthFromStorage();
