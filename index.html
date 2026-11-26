@@ -60,27 +60,8 @@
 </head>
 <body class="min-h-screen flex flex-col bg-slate-50">
 
-  <!-- Mandatory Mobile Login Gate (Shown before app opens) -->
-  <section id="loginGate" class="min-h-screen flex items-center justify-center p-4 bg-gradient-to-br from-slate-900 via-slate-800 to-teal-950">
-    <div class="bg-white rounded-3xl shadow-2xl max-w-md w-full overflow-hidden border border-slate-200">
-      <div class="px-6 py-5 bg-slate-900 text-white text-center space-y-1.5">
-        <div class="w-12 h-12 mx-auto rounded-2xl bg-teal-500/20 border border-teal-400/40 flex items-center justify-center text-2xl">🗺️</div>
-        <h1 class="text-xl font-bold tracking-tight">भूगोल एटलस (Bhoogol Atlas)</h1>
-        <p class="text-xs text-slate-300">विश्व, भारत व राजस्थान का संपूर्ण इंटरैक्टिव मानचित्र</p>
-      </div>
-      <div id="loginGateBody" class="p-6 space-y-4"></div>
-      <div class="px-6 py-3 bg-slate-50 border-t border-slate-100 flex items-center justify-center gap-3 text-[11px] text-slate-500">
-        <button data-legal-tab="privacy" class="footer-legal-btn hover:text-teal-700 underline">गोपनीयता नीति</button>
-        <span>•</span>
-        <button data-legal-tab="terms" class="footer-legal-btn hover:text-teal-700 underline">नियम व शर्तें</button>
-        <span>•</span>
-        <button data-legal-tab="contact" class="footer-legal-btn hover:text-teal-700 underline">संपर्क करें</button>
-      </div>
-    </div>
-  </section>
-
-  <!-- Main App Shell (Unlocked after Mobile Login) -->
-  <div id="appShell" class="hidden min-h-screen flex flex-col">
+<!-- Main App Shell -->
+  <div id="appShell" class="min-h-screen flex flex-col">
 
   <!-- Top Header -->
   <header class="bg-slate-900 text-white shadow-md sticky top-0 z-30">
@@ -100,7 +81,6 @@
         <button data-tab="quiz" class="tab-btn px-3 py-1.5 rounded-lg text-xs sm:text-sm font-medium whitespace-nowrap transition text-slate-300 hover:text-white hover:bg-slate-700">🎯 अभ्यास क्विज़</button>
       </nav>
       <div class="flex items-center gap-2">
-        <button id="openLoginBtn" class="px-3 py-1.5 rounded-xl text-xs font-semibold bg-emerald-600 hover:bg-emerald-500 text-white transition flex items-center gap-1.5 shadow-sm">📱 लॉगिन</button>
         <button id="openLegalBtn" class="px-3 py-1.5 rounded-xl text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 transition">ℹ️ नीतियाँ व संपर्क</button>
       </div>
     </div>
@@ -231,18 +211,7 @@
   </div>
 
 
-  <!-- Mobile Number Login Modal -->
-  <div id="loginModal" class="hidden fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
-    <div class="bg-white rounded-2xl shadow-xl max-w-md w-full overflow-hidden border border-slate-200">
-      <div class="px-5 py-3.5 bg-slate-900 text-white flex items-center justify-between">
-        <h3 class="text-base font-bold">📱 मोबाइल नंबर से लॉगिन</h3>
-        <button id="closeLoginBtn" class="text-slate-300 hover:text-white text-lg font-bold">✕</button>
-      </div>
-      <div id="loginModalBody" class="p-5 space-y-4"></div>
-    </div>
-  </div>
-
-  <!-- Play Store Legal, Copyright & Contact Modal -->
+<!-- Play Store Legal, Copyright & Contact Modal -->
   <div id="legalModal" class="hidden fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-3 sm:p-5">
     <div class="bg-white rounded-2xl shadow-xl max-w-3xl w-full max-h-[88vh] flex flex-col overflow-hidden border border-slate-200">
       <div class="px-5 py-3.5 bg-slate-900 text-white flex items-center justify-between">
@@ -1358,95 +1327,6 @@
       document.getElementById('admobInterstitialModal').classList.remove('hidden');
     }
 
-    const REQUIRE_LOGIN_ON_START = false;
-
-    function syncGateVisibility() {
-      const gate = document.getElementById('loginGate');
-      const shell = document.getElementById('appShell');
-      if (!REQUIRE_LOGIN_ON_START || (authUser && authUser.phone)) {
-        gate.classList.add('hidden');
-        shell.classList.remove('hidden');
-        if (state.activeTab !== 'quiz') renderMap(true);
-      } else {
-        shell.classList.add('hidden');
-        gate.classList.remove('hidden');
-        renderLoginGate('phone');
-      }
-      updateLoginButton();
-    }
-
-    function renderLoginGate(step = 'phone') {
-      const body = document.getElementById('loginGateBody');
-      if (!body) return;
-      if (step === 'phone') {
-        body.innerHTML = `
-          <p class="text-xs text-slate-600 leading-relaxed text-center">एप्लीकेशन खोलने के लिए कृपया अपने 10-अंकीय मोबाइल नंबर से लॉगिन करें।</p>
-          <div class="space-y-3">
-            <div>
-              <label class="block text-xs font-semibold text-slate-700 mb-1">आपका नाम (ऐच्छिक)</label>
-              <input id="gateNameInput" type="text" placeholder="जैसे: राहुल शर्मा" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-teal-500" />
-            </div>
-            <div>
-              <label class="block text-xs font-semibold text-slate-700 mb-1">मोबाइल नंबर (+91)</label>
-              <div class="flex items-center border border-slate-300 rounded-xl overflow-hidden focus-within:ring-2 focus-within:ring-teal-500">
-                <span class="px-3 py-2 bg-slate-100 text-slate-700 text-sm font-semibold border-r border-slate-300">+91</span>
-                <input id="gatePhoneInput" type="tel" maxlength="10" placeholder="10 अंकों का मोबाइल नंबर" class="flex-1 px-3 py-2 text-sm focus:outline-none" />
-              </div>
-              <p id="gateErrorMsg" class="hidden text-xs text-rose-600 mt-1"></p>
-            </div>
-            <button id="gateSendOtpBtn" class="w-full py-2.5 rounded-xl bg-teal-600 hover:bg-teal-700 text-white text-sm font-semibold transition shadow-sm">OTP प्राप्त करें व आगे बढ़ें →</button>
-          </div>
-        `;
-      } else {
-        body.innerHTML = `
-          <div class="bg-blue-50 border border-blue-200 rounded-xl p-3 text-xs text-blue-900 leading-relaxed">
-            <strong>त्वरित सत्यापन कोड:</strong> <span class="font-mono font-bold text-sm">${generatedOtp}</span><br/>
-            कृपया आगे बढ़ने के लिए ऊपर दिया गया 4-अंकीय कोड दर्ज करें।
-          </div>
-          <div class="space-y-3">
-            <div>
-              <label class="block text-xs font-semibold text-slate-700 mb-1">+91 ${pendingPhone} पर प्राप्त 4-अंकीय OTP दर्ज करें</label>
-              <input id="gateOtpInput" type="text" maxlength="4" placeholder="4 अंकों का OTP" class="w-full px-3 py-2 text-center tracking-widest font-mono text-base border border-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-teal-500" />
-              <p id="gateOtpErrorMsg" class="hidden text-xs text-rose-600 mt-1"></p>
-            </div>
-            <div class="flex gap-2">
-              <button id="gateBackBtn" class="px-4 py-2 rounded-xl border border-slate-300 text-slate-700 text-xs font-semibold hover:bg-slate-100">← नंबर बदलें</button>
-              <button id="gateVerifyOtpBtn" class="flex-1 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-semibold transition">सत्यापित करें व ऐप खोलें</button>
-            </div>
-          </div>
-        `;
-      }
-    }
-
-    function loadAuthFromStorage() {
-      try {
-        const raw = localStorage.getItem('bhoogol_atlas_user');
-        if (raw) authUser = JSON.parse(raw);
-      } catch (e) {}
-      syncGateVisibility();
-    }
-
-    function saveAuthToStorage(userObj) {
-      authUser = userObj;
-      try {
-        if (userObj) localStorage.setItem('bhoogol_atlas_user', JSON.stringify(userObj));
-        else localStorage.removeItem('bhoogol_atlas_user');
-      } catch (e) {}
-      syncGateVisibility();
-    }
-
-    function updateLoginButton() {
-      const btn = document.getElementById('openLoginBtn');
-      if (!btn) return;
-      if (authUser && authUser.phone) {
-        btn.innerHTML = `👤 +91 •••••${authUser.phone.slice(-4)}`;
-        btn.className = 'px-3 py-1.5 rounded-xl text-xs font-semibold bg-teal-600 hover:bg-teal-500 text-white transition flex items-center gap-1.5 shadow-sm';
-      } else {
-        btn.innerHTML = '📱 लॉगिन';
-        btn.className = 'px-3 py-1.5 rounded-xl text-xs font-semibold bg-emerald-600 hover:bg-emerald-500 text-white transition flex items-center gap-1.5 shadow-sm';
-      }
-    }
-
     function showToast(msg) {
       const t = document.getElementById('appToast');
       t.textContent = msg;
@@ -1455,60 +1335,6 @@
       window._toastTimer = setTimeout(() => t.classList.add('hidden'), 3200);
     }
 
-    function renderLoginModal(step = 'phone') {
-      const body = document.getElementById('loginModalBody');
-      if (authUser) {
-        body.innerHTML = `
-          <div class="bg-teal-50 border border-teal-200 rounded-xl p-4 space-y-2">
-            <div class="text-xs font-semibold text-teal-700">लॉगिन सक्रिय है</div>
-            <div class="text-base font-bold text-slate-900">${authUser.name || 'छात्र / उपयोगकर्ता'}</div>
-            <div class="text-sm font-mono text-slate-700">+91 ${authUser.phone}</div>
-            <div class="text-xs text-slate-500">क्विज़ स्कोर व अध्ययन प्रगति इस डिवाइस पर सहेजी जाती है।</div>
-          </div>
-          <button id="logoutBtn" class="w-full py-2 rounded-xl bg-rose-600 hover:bg-rose-700 text-white text-sm font-semibold transition">लॉगआउट करें</button>
-        `;
-        return;
-      }
-
-      if (step === 'phone') {
-        body.innerHTML = `
-          <p class="text-xs text-slate-600 leading-relaxed">अपना 10-अंकीय भारतीय मोबाइल नंबर दर्ज करें। लॉगिन करने से आपका नाम और क्विज़ स्कोर सुरक्षित रहेगा।</p>
-          <div class="space-y-3">
-            <div>
-              <label class="block text-xs font-semibold text-slate-700 mb-1">आपका नाम (ऐच्छिक)</label>
-              <input id="loginNameInput" type="text" placeholder="जैसे: राहुल शर्मा" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-teal-500" />
-            </div>
-            <div>
-              <label class="block text-xs font-semibold text-slate-700 mb-1">मोबाइल नंबर (+91)</label>
-              <div class="flex items-center border border-slate-300 rounded-xl overflow-hidden focus-within:ring-2 focus-within:ring-teal-500">
-                <span class="px-3 py-2 bg-slate-100 text-slate-700 text-sm font-semibold border-r border-slate-300">+91</span>
-                <input id="loginPhoneInput" type="tel" maxlength="10" placeholder="10 अंकों का मोबाइल नंबर" class="flex-1 px-3 py-2 text-sm focus:outline-none" />
-              </div>
-              <p id="loginErrorMsg" class="hidden text-xs text-rose-600 mt-1"></p>
-            </div>
-            <button id="sendOtpBtn" class="w-full py-2.5 rounded-xl bg-teal-600 hover:bg-teal-700 text-white text-sm font-semibold transition">OTP प्राप्त करें →</button>
-          </div>
-        `;
-      } else {
-        body.innerHTML = `
-          <div class="bg-blue-50 border border-blue-200 rounded-xl p-3 text-xs text-blue-900 leading-relaxed">
-            <strong>त्वरित सत्यापन कोड:</strong> <span class="font-mono font-bold text-sm">${generatedOtp}</span><br/>
-            अपनी प्रोफ़ाइल सुरक्षित करने हेतु कृपया ऊपर दिया गया 4-अंकीय कोड दर्ज करें।
-          </div>
-          <div class="space-y-3">
-            <div>
-              <label class="block text-xs font-semibold text-slate-700 mb-1">+91 ${pendingPhone} पर प्राप्त 4-अंकीय OTP दर्ज करें</label>
-              <input id="otpInput" type="text" maxlength="4" placeholder="4 अंकों का OTP" class="w-full px-3 py-2 text-center tracking-widest font-mono text-base border border-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-teal-500" />
-              <p id="otpErrorMsg" class="hidden text-xs text-rose-600 mt-1"></p>
-            </div>
-            <div class="flex gap-2">
-              <button id="backPhoneBtn" class="px-4 py-2 rounded-xl border border-slate-300 text-slate-700 text-xs font-semibold hover:bg-slate-100">← नंबर बदलें</button>
-              <button id="verifyOtpBtn" class="flex-1 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-semibold transition">सत्यापित करें</button>
-            </div>
-          </div>
-        `;
-      }
-    }
 
     function openLegalModal(tab = 'about') {
       document.getElementById('legalModal').classList.remove('hidden');
@@ -1539,11 +1365,10 @@
         body.innerHTML = `
           <div class="space-y-2.5 leading-relaxed text-xs sm:text-sm">
             <h4 class="text-base font-bold text-slate-900">🔒 गोपनीयता नीति (Privacy Policy)</h4>
-            <p><strong>1. एकत्र की जाने वाली जानकारी:</strong> लॉगिन सुविधा के लिए हम केवल आपका मोबाइल नंबर (+91) और वैकल्पिक नाम प्राप्त करते हैं।</p>
-            <p><strong>2. डेटा का उपयोग:</strong> आपका मोबाइल नंबर केवल खाता सत्यापन (OTP लॉगिन) और आपकी क्विज़ प्रगति को सहेजने के लिए उपयोग किया जाता है। हम आपका व्यक्तिगत डेटा किसी तृतीय पक्ष को बेचते या साझा नहीं करते।</p>
-            <p><strong>3. स्थानीय संग्रहण (Local Storage):</strong> आपकी अध्ययन प्राथमिकताएँ और क्विज़ स्कोर आपके डिवाइस में सुरक्षित रहते हैं।</p>
-            <p><strong>4. विज्ञापन (Google AdMob):</strong> यह ऐप मुफ्त शैक्षिक सेवा बनाए रखने हेतु Google AdMob विज्ञापन प्रदर्शित करती है, जो Play Store नीतियों के अनुरूप विज्ञापन ID का उपयोग कर सकते हैं।</p>
-            <p><strong>5. डेटा हटाने का अधिकार:</strong> आप किसी भी समय ऐप से लॉगआउट कर सकते हैं या संपर्क पृष्ठ के माध्यम से अपना खाता व डेटा हटाने का अनुरोध कर सकते हैं।</p>
+            <p><strong>1. कोई व्यक्तिगत डेटा संग्रह नहीं:</strong> इस ऐप का उपयोग करने के लिए किसी लॉगिन, मोबाइल नंबर या पंजीकरण की आवश्यकता नहीं है। हम आपसे कोई व्यक्तिगत पहचान जानकारी एकत्र नहीं करते।</p>
+            <p><strong>2. स्थानीय संग्रहण (Local Storage):</strong> आपकी अध्ययन प्राथमिकताएँ और क्विज़ स्कोर केवल आपके अपने डिवाइस में सुरक्षित रहते हैं।</p>
+            <p><strong>3. विज्ञापन (Google AdMob):</strong> यह ऐप मुफ्त शैक्षिक सेवा बनाए रखने हेतु Google AdMob विज्ञापन प्रदर्शित करती है, जो Google की नीतियों के अनुरूप विज्ञापन ID का उपयोग कर सकते हैं।</p>
+            <p><strong>4. बाहरी गोपनीयता नीति:</strong> विस्तृत गोपनीयता नीति हमारी वेबसाइट <a href="https://shankerb0003-debug.github.io/privacy.html" class="text-teal-700 underline">shankerb0003-debug.github.io/privacy.html</a> पर उपलब्ध है।</p>
           </div>
         `;
       } else if (tab === 'terms') {
@@ -1552,8 +1377,7 @@
             <h4 class="text-base font-bold text-slate-900">📜 नियम एवं शर्तें (Terms & Conditions)</h4>
             <p><strong>1. शैक्षिक उद्देश्य:</strong> यह ऐप केवल शैक्षिक और परीक्षा तैयारी के उद्देश्य से बनाई गई है।</p>
             <p><strong>2. बौद्धिक संपदा:</strong> ऐप की सामग्री, संकलित तथ्य, क्विज़ प्रश्न और डिज़ाइन प्रकाशक की संपत्ति हैं; बिना अनुमति व्यावसायिक पुनर्वितरण वर्जित है।</p>
-            <p><strong>3. उपयोगकर्ता आचरण:</strong> लॉगिन हेतु केवल स्वयं के वैध मोबाइल नंबर का उपयोग करें।</p>
-          </div>
+                      </div>
         `;
       } else if (tab === 'copyright') {
         body.innerHTML = `
@@ -1585,11 +1409,6 @@
       }
     }
 
-    document.getElementById('openLoginBtn').addEventListener('click', () => {
-      document.getElementById('loginModal').classList.remove('hidden');
-      renderLoginModal('phone');
-    });
-    document.getElementById('closeLoginBtn').addEventListener('click', () => document.getElementById('loginModal').classList.add('hidden'));
     document.getElementById('openLegalBtn').addEventListener('click', () => openLegalModal('about'));
     document.getElementById('closeLegalBtn').addEventListener('click', () => document.getElementById('legalModal').classList.add('hidden'));
 
@@ -1601,38 +1420,6 @@
       if (b) renderLegalTab(b.dataset.legalPanel);
     });
 
-    document.getElementById('loginModalBody').addEventListener('click', e => {
-      if (e.target.id === 'sendOtpBtn') {
-        const phone = (document.getElementById('loginPhoneInput').value || '').trim();
-        const err = document.getElementById('loginErrorMsg');
-        if (!/^[6-9]\d{9}$/.test(phone)) {
-          err.textContent = 'कृपया 10 अंकों का वैध भारतीय मोबाइल नंबर (6–9 से शुरू) दर्ज करें।';
-          err.classList.remove('hidden');
-          return;
-        }
-        pendingPhone = phone;
-        window._pendingName = (document.getElementById('loginNameInput').value || '').trim();
-        generatedOtp = String(Math.floor(1000 + Math.random() * 9000));
-        renderLoginModal('otp');
-      } else if (e.target.id === 'backPhoneBtn') {
-        renderLoginModal('phone');
-      } else if (e.target.id === 'verifyOtpBtn') {
-        const entered = (document.getElementById('otpInput').value || '').trim();
-        const err = document.getElementById('otpErrorMsg');
-        if (entered !== generatedOtp) {
-          err.textContent = 'गलत कोड! कृपया ऊपर दिखाया गया 4-अंकीय सत्यापन कोड दर्ज करें।';
-          err.classList.remove('hidden');
-          return;
-        }
-        saveAuthToStorage({ phone: pendingPhone, name: window._pendingName || 'छात्र', joinedAt: new Date().toISOString() });
-        document.getElementById('loginModal').classList.add('hidden');
-        showToast(`स्वागत है! +91 ${pendingPhone} से लॉगिन सफल रहा।`);
-      } else if (e.target.id === 'logoutBtn') {
-        saveAuthToStorage(null);
-        document.getElementById('loginModal').classList.add('hidden');
-        showToast('आप सफलतापूर्वक लॉगआउट हो गए हैं।');
-      }
-    });
 
     document.getElementById('legalModalBody').addEventListener('submit', e => {
       if (e.target.id === 'contactForm') {
@@ -1642,42 +1429,12 @@
       }
     });
 
-
-    document.getElementById('loginGateBody').addEventListener('click', e => {
-      if (e.target.id === 'gateSendOtpBtn') {
-        const phone = (document.getElementById('gatePhoneInput').value || '').trim();
-        const err = document.getElementById('gateErrorMsg');
-        if (!/^[6-9]\d{9}$/.test(phone)) {
-          err.textContent = 'कृपया 10 अंकों का वैध भारतीय मोबाइल नंबर (6–9 से शुरू) दर्ज करें।';
-          err.classList.remove('hidden');
-          return;
-        }
-        pendingPhone = phone;
-        window._pendingName = (document.getElementById('gateNameInput').value || '').trim();
-        generatedOtp = String(Math.floor(1000 + Math.random() * 9000));
-        renderLoginGate('otp');
-      } else if (e.target.id === 'gateBackBtn') {
-        renderLoginGate('phone');
-      } else if (e.target.id === 'gateVerifyOtpBtn') {
-        const entered = (document.getElementById('gateOtpInput').value || '').trim();
-        const err = document.getElementById('gateOtpErrorMsg');
-        if (entered !== generatedOtp) {
-          err.textContent = 'गलत कोड! कृपया ऊपर दिखाया गया 4-अंकीय सत्यापन कोड दर्ज करें।';
-          err.classList.remove('hidden');
-          return;
-        }
-        saveAuthToStorage({ phone: pendingPhone, name: window._pendingName || 'छात्र', joinedAt: new Date().toISOString() });
-        showToast(`स्वागत है! +91 ${pendingPhone} से लॉगिन सफल रहा।`);
-      }
-    });
-
     document.getElementById('closeAdmobInterstitialBtn').addEventListener('click', () => {
       document.getElementById('admobInterstitialModal').classList.add('hidden');
     });
 
 
     if (window.AndroidAdMob) { const b = document.getElementById('admobBannerSlot'); if (b) b.classList.add('hidden'); }
-    loadAuthFromStorage();
 
     window.addEventListener('DOMContentLoaded', () => switchTab('world'));
   </script>
