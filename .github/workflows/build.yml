@@ -22,7 +22,6 @@ jobs:
             [ -f strings.xml ] && mv strings.xml app/src/main/res/values/
             [ -f index.html ] && mv index.html app/src/main/assets/
             mkdir -p app/src/main/res/mipmap-xxxhdpi && [ -f ic_launcher.png ] && mv ic_launcher.png app/src/main/res/mipmap-xxxhdpi/
-          
             [ -f proguard-rules.pro ] && mv proguard-rules.pro app/
 
             cat << 'GRADLE_ROOT' > build.gradle
@@ -73,13 +72,33 @@ jobs:
         with:
           gradle-version: '8.7'
 
-      - name: Build Release AAB and Debug APK
-        run: gradle bundleRelease assembleDebug --no-daemon
+      - name: Build Release AAB, Release APK and Debug APK
+        run: gradle bundleRelease assembleRelease assembleDebug --no-daemon
+
+      - name: Sign Release APK
+        run: |
+          KEYSTORE_FILE="release-keystore.jks"
+          if [ ! -f "$KEYSTORE_FILE" ]; then
+            keytool -genkeypair -v -keystore "$KEYSTORE_FILE" -keyalg RSA -keysize 2048 -validity 10000 \
+              -alias bhoogolatlas -storepass bhoogol123 -keypass bhoogol123 \
+              -dname "CN=Bhawani Shankar, O=Bhoogol Atlas, L=Suratgarh, ST=Rajasthan, C=IN"
+          fi
+          BUILD_TOOLS=$(ls -d "$ANDROID_HOME/build-tools/"* | sort -V | tail -n 1)
+          UNSIGNED_APK=$(ls app/build/outputs/apk/release/*-unsigned.apk | head -n 1)
+          "$BUILD_TOOLS/zipalign" -p -f 4 "$UNSIGNED_APK" app-release-aligned.apk
+          "$BUILD_TOOLS/apksigner" sign --ks "$KEYSTORE_FILE" --ks-key-alias bhoogolatlas \
+            --ks-pass pass:bhoogol123 --key-pass pass:bhoogol123 \
+            --out app/build/outputs/apk/release/BhoogolAtlas-release.apk app-release-aligned.apk
 
       - uses: actions/upload-artifact@v4
         with:
           name: BhoogolAtlas-PlayStore-AAB
           path: app/build/outputs/bundle/release/*.aab
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: BhoogolAtlas-Release-APK
+          path: app/build/outputs/apk/release/BhoogolAtlas-release.apk
 
       - uses: actions/upload-artifact@v4
         with:
